@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Organizador de Contactos</title>
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#000000">
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f2f2f2;
+  margin: 0;
+  padding: 15px;
+}
+h1 {
+  text-align: center;
+}
+input, button {
+  width: 100%;
+  padding: 12px;
+  margin: 5px 0;
+  font-size: 16px;
+}
+button {
+  background: #000;
+  color: #fff;
+  border: none;
+}
+.card {
+  background: #fff;
+  padding: 10px;
+  margin-top: 8px;
+  border-radius: 5px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>📇 Contactos</h1>
+
+<input id="nombre" placeholder="Nombre completo">
+<input id="empresa" placeholder="Empresa / Óptica">
+<input id="telefono" placeholder="Teléfono">
+
+<button onclick="guardar()">Guardar contacto</button>
+
+<div id="lista"></div>
+
+<script>
+let contactos = JSON.parse(localStorage.getItem("contactos")) || [];
+
+function guardar() {
+  const nombre = nombreInput.value;
+  const empresa = empresaInput.value;
+  const telefono = telefonoInput.value;
+
+  if (!nombre || !telefono) return alert("Faltan datos");
+
+  contactos.push({ nombre, empresa, telefono });
+  localStorage.setItem("contactos", JSON.stringify(contactos));
+  mostrar();
+
+  nombreInput.value = "";
+  empresaInput.value = "";
+  telefonoInput.value = "";
+}
+
+function mostrar() {
+  lista.innerHTML = "";
+  contactos.forEach(c => {
+    lista.innerHTML += `
+      <div class="card">
+        <b>${c.nombre}</b><br>
+        ${c.empresa}<br>
+        📞 ${c.telefono}
+      </div>`;
+  });
+}
+
+mostrar();
+
+const nombreInput = document.getElementById("nombre");
+const empresaInput = document.getElementById("empresa");
+const telefonoInput = document.getElementById("telefono");
+const lista = document.getElementById("lista");
+</script>
+
+</body>
+</html>
